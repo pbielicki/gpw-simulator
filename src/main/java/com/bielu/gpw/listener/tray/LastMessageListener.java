@@ -7,15 +7,15 @@ import com.bielu.gpw.GpwTray;
 
 public class LastMessageListener implements ActionListener {
 
-    private final GpwTray gpwTray;
-    
-    public LastMessageListener(GpwTray gpwTray) {
-        this.gpwTray = gpwTray;
-    }
+  private final GpwTray gpwTray;
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        gpwTray.displayLastMessage();
-    }
+  public LastMessageListener(GpwTray gpwTray) {
+    this.gpwTray = gpwTray;
+  }
+
+  @Override
+  public void actionPerformed(ActionEvent e) {
+    gpwTray.displayLastMessage();
+  }
 
 }

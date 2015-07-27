@@ -43,7 +43,7 @@ public class DataWriterListener implements ChangeListener<Wallet> {
                         formatter.format(new Date()), 
                         cur.getName(), 
                         cur.getQuote(), 
-                        Util.percentagePlus(wal, cur)));
+                        Util.percentageSigned(wal, cur)));
             }
         }
         out.write(String.format("%s: %.2f\n", formatter.format(new Date()), current.getWalletValue()));

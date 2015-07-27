@@ -1,27 +1,18 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <gpw>
-	<tray>
-		<menuItem order="1" type="item" label="Show last message"
-			listenerClass="com.bielu.gpw.listener.tray.LastMessageListener" />
+  <tray>
+    <menuItem order="1" type="item" label="Show last message" listenerClass="com.bielu.gpw.listener.tray.LastMessageListener" />
+    <menuItem order="2" type="item" label="Show current quotes" listenerClass="com.bielu.gpw.listener.tray.CurrentQuotesListener" />
+    <menuItem order="3" type="separator" />
+    <menuItem order="4" type="item" label="Show last recommendation" listenerClass="com.bielu.gpw.listener.tray.LastRecommendationListener" />
+    <menuItem order="5" type="separator" />
+    <menuItem order="6" type="action" label="Show GUI viewer" listenerClass="com.bielu.gpw.listener.tray.ShowGuiViewerListener" />
+  </tray>
 
-		<menuItem order="2" type="item" label="Show current quotes"
-			listenerClass="com.bielu.gpw.listener.tray.CurrentQuotesListener" />
+  <gui>
+    <plugin order="1" label="Logs" pluginClass="com.bielu.gpw.listener.gui.plugin.LogPlugin" />
+  </gui>
 
-		<menuItem order="3" type="separator" />
-
-		<menuItem order="4" type="item" label="Show last recommendation"
-			listenerClass="com.bielu.gpw.listener.tray.LastRecommendationListener" />
-
-		<menuItem order="5" type="separator" />
-
-		<menuItem order="6" type="action" label="Show GUI viewer"
-			listenerClass="com.bielu.gpw.listener.tray.ShowGuiViewerListener" />
-	</tray>
-	
-	<gui>
-	   <plugin order="1" label="Logs" pluginClass="com.bielu.gpw.listener.gui.plugin.LogPlugin" />
-	</gui>
-  
-    <recommendation fileName="recommendations.txt" />
-    <quotes url="http://www.gpw.pl/ajaxindex.php?action=GPWQuotations&amp;start=showTable&amp;tab=all&amp;lang=PL&amp;full=1" />
+  <recommendation fileName="recommendations.txt" />
+  <quotes url="http://www.gpw.pl/ajaxindex.php?action=GPWQuotations&amp;start=showTable&amp;tab=all&amp;lang=PL&amp;full=1" />
 </gpw>

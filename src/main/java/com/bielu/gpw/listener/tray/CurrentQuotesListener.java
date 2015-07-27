@@ -7,14 +7,14 @@ import com.bielu.gpw.GpwTray;
 
 public class CurrentQuotesListener implements ActionListener {
 
-    private final GpwTray gpwTray;
+  private final GpwTray gpwTray;
 
-    public CurrentQuotesListener(GpwTray gpwTray) {
-        this.gpwTray = gpwTray;
-    }
-    
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        gpwTray.displayCurrentMessage();
-    }
+  public CurrentQuotesListener(GpwTray gpwTray) {
+    this.gpwTray = gpwTray;
+  }
+
+  @Override
+  public void actionPerformed(ActionEvent e) {
+    gpwTray.displayCurrentMessage();
+  }
 }

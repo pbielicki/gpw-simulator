@@ -7,14 +7,14 @@ import com.bielu.gpw.GpwTray;
 
 public class LastRecommendationListener implements ActionListener {
 
-    private final GpwTray gpwTray;
-    
-    public LastRecommendationListener(GpwTray gpwTray) {
-        this.gpwTray = gpwTray;
-    }
+  private final GpwTray gpwTray;
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        gpwTray.displayLastRecommendation();
-    }
+  public LastRecommendationListener(GpwTray gpwTray) {
+    this.gpwTray = gpwTray;
+  }
+
+  @Override
+  public void actionPerformed(ActionEvent e) {
+    gpwTray.displayLastRecommendation();
+  }
 }

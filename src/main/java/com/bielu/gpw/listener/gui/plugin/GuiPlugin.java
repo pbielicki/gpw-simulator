@@ -4,5 +4,5 @@ import javax.swing.JComponent;
 
 public interface GuiPlugin {
 
-    JComponent getComponent();
+  JComponent getComponent();
 }
