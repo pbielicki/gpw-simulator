@@ -64,7 +64,7 @@ public class GpwMonitor implements Closeable {
   protected Wallet createWallet() {
     try {
       LineNumberReader in = new LineNumberReader(new InputStreamReader(findDb()));
-      final List<ShareInfo> shares = new ArrayList<ShareInfo>();
+      final List<ShareInfo> shares = new ArrayList<>();
 
       String line = null;
       while ((line = in.readLine()) != null) {

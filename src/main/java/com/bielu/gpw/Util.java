@@ -14,15 +14,16 @@ public final class Util {
   public static final BigDecimal THRESHOLD_PERCENT = BigDecimal.ONE;
   public static final int OPEN_HOUR = 8;
   public static final int CLOSE_HOUR = 18;
-  public static final BigDecimal TAX = BigDecimal.valueOf(0.81D);
+  public static final BigDecimal NET_PROFIT_RATE = BigDecimal.valueOf(0.81D); // 19% of tax
   public static final String FORMAT_PERCENT = "%.1f%%";
   public static final String FORMAT_MONEY = "%.2f";
 
-  private static final BigDecimal X_100 = BigDecimal.valueOf(100);
-  private static final BigDecimal X_365 = BigDecimal.valueOf(365);
+  private static final BigDecimal HUNDRED = BigDecimal.valueOf(100);
+  private static final BigDecimal DAYS_IN_A_YEAR = BigDecimal.valueOf(365);
+  private static final long MILLIS_IN_A_DAY = 1000L * 60L * 60L * 24L;
 
   public static BigDecimal percentage(BigDecimal originalValue, BigDecimal changedValue) {
-    return changedValue.divide(originalValue, DECIMAL128).multiply(X_100, DECIMAL128).subtract(X_100, DECIMAL128).abs();
+    return changedValue.divide(originalValue, DECIMAL128).multiply(HUNDRED, DECIMAL128).subtract(HUNDRED, DECIMAL128).abs();
   }
 
   public static String percentageSigned(BigDecimal originalValue, BigDecimal changedValue) {
@@ -81,17 +82,22 @@ public final class Util {
     BigDecimal rate = percentage(original, current);
 
     long period = new Date().getTime() - original.getStartDate().getTime();
-    BigDecimal days = BigDecimal.valueOf((period / (1000L * 60L * 60L * 24L)) + 1);
+    BigDecimal days = BigDecimal.valueOf((period / MILLIS_IN_A_DAY) + 1);
+    if (days.compareTo(DAYS_IN_A_YEAR) < 0) {
+      days = DAYS_IN_A_YEAR;
+    }
 
-    BigDecimal yearlyRate = rate.multiply(X_365, DECIMAL128).divide(days, DECIMAL128);
+    BigDecimal yearlyRate = rate.multiply(DAYS_IN_A_YEAR, DECIMAL128).divide(days, DECIMAL128);
     return String.format(FORMAT_PERCENT, yearlyRate);
   }
 
   public static boolean isMarketOpen() {
     Calendar now = Calendar.getInstance();
     // stock exchange is not working between 18 - 9 and on weekends
-    if (now.get(Calendar.HOUR_OF_DAY) >= CLOSE_HOUR || now.get(Calendar.HOUR_OF_DAY) <= OPEN_HOUR
-        || now.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY || now.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+    if (now.get(Calendar.HOUR_OF_DAY) >= CLOSE_HOUR 
+     || now.get(Calendar.HOUR_OF_DAY) <= OPEN_HOUR
+     || now.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY 
+     || now.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
 
       return false;
     }

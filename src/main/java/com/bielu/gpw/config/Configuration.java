@@ -66,7 +66,7 @@ public final class Configuration {
   }
 
   private List<GuiPluginInfo> configureGuiPlugins() {
-    List<GuiPluginInfo> result = new ArrayList<GuiPluginInfo>();
+    List<GuiPluginInfo> result = new ArrayList<>();
     int i = 0;
     while (true) {
       i++;
@@ -82,7 +82,7 @@ public final class Configuration {
   }
 
   private List<MenuItemInfo> configureMenuItems() {
-    List<MenuItemInfo> result = new ArrayList<MenuItemInfo>();
+    List<MenuItemInfo> result = new ArrayList<>();
     int i = 0;
     while (true) {
       i++;

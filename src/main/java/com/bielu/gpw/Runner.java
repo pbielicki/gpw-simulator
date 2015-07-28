@@ -102,16 +102,16 @@ public final class Runner {
       return null;
     }
 
-    final List<ChangeListener<Wallet>> quoteListeners = new ArrayList<ChangeListener<Wallet>>();
+    final List<ChangeListener<Wallet>> quoteListeners = new ArrayList<>();
     quoteListeners.add(new DataWriterListener(myWallet));
     quoteListeners.add(new LoggingListener(myWallet));
     quoteListeners.add(new TrayListener(myWallet, monitor.getGpwTray()));
     quoteListeners.add(new DatabaseWriterListener());
 
-    final List<ChangeListener<Object>> objectListeners = new ArrayList<ChangeListener<Object>>();
+    final List<ChangeListener<Object>> objectListeners = new ArrayList<>();
     objectListeners.add(SwingDataViewerListener.getInstance(myWallet));
 
-    final List<ChangeListener<List<Recommendation>>> recListeners = new ArrayList<ChangeListener<List<Recommendation>>>();
+    final List<ChangeListener<List<Recommendation>>> recListeners = new ArrayList<>();
     recListeners.add(new RecommendationTrayListener(monitor.getGpwTray()));
     recListeners.add(new RecommendationFileWriterListener());
 

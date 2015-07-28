@@ -47,7 +47,7 @@ public class MoneyPlReader implements Callable<List<Recommendation>> {
   }
 
   private List<Recommendation> getRecommendations(String webPage) {
-    List<Recommendation> result = new ArrayList<Recommendation>();
+    List<Recommendation> result = new ArrayList<>();
     int idx = 0;
     int loopCount = 0;
 

@@ -14,7 +14,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.bielu.gpw.GpwThreadFactory;
-import com.bielu.gpw.Util;
 import com.bielu.gpw.domain.Recommendation;
 import com.bielu.gpw.domain.Wallet;
 import com.bielu.gpw.listener.ChangeListener;
@@ -45,11 +44,6 @@ public class RecommendationReaderTask implements Runnable {
   @Override
   public void run() {
     try {
-      if (Util.isMarketOpen() == false) {
-        LOG.debug("Stock exchange is closed");
-        return;
-      }
-
       List<Recommendation> current = getCurrentRecommendations();
       for (ChangeListener<List<Recommendation>> cl : listeners) {
         cl.stateChanged(current);
@@ -63,9 +57,9 @@ public class RecommendationReaderTask implements Runnable {
   }
 
   private List<Recommendation> getCurrentRecommendations() throws IOException {
-    final List<Future<List<Recommendation>>> futures = new ArrayList<Future<List<Recommendation>>>(readers.size());
+    final List<Future<List<Recommendation>>> futures = new ArrayList<>(readers.size());
     final ExecutorService service = Executors.newFixedThreadPool(2, THREAD_FACTORY);
-    final List<Recommendation> result = new ArrayList<Recommendation>();
+    final List<Recommendation> result = new ArrayList<>();
 
     try {
       for (Callable<List<Recommendation>> reader : readers) {
