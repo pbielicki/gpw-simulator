@@ -28,13 +28,18 @@ public final class Util {
 
   public static String percentageSigned(BigDecimal originalValue, BigDecimal changedValue) {
     BigDecimal value = percentage(originalValue, changedValue);
+    return String.format("%s" + FORMAT_PERCENT, sign(originalValue, changedValue), value);
+  }
+  
+  public static String sign(BigDecimal originalValue, BigDecimal changedValue) {
     String sign = "";
     if (originalValue.compareTo(changedValue) > 0) {
       sign = "-";
     } else if (originalValue.compareTo(changedValue) < 0) {
       sign = "+";
     }
-    return String.format("%s" + FORMAT_PERCENT, sign, value);
+    
+    return sign;
   }
 
   public static BigDecimal percentage(Wallet originalValue, Wallet changedValue) {
@@ -88,7 +93,7 @@ public final class Util {
     }
 
     BigDecimal yearlyRate = rate.multiply(DAYS_IN_A_YEAR, DECIMAL128).divide(days, DECIMAL128);
-    return String.format(FORMAT_PERCENT, yearlyRate);
+    return String.format("%s" + FORMAT_PERCENT, sign(original.getValue(), current.getValue()), yearlyRate);
   }
 
   public static boolean isMarketOpen() {
