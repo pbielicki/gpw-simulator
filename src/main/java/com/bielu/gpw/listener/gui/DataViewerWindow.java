@@ -223,13 +223,13 @@ public class DataViewerWindow extends JFrame {
         case COMPANY_SYMBOL:
           return share.getName();
         case INVESTMENT_DATE:
-          return format.format(share.getStartDate());
+          return format.format(share.startDate());
         case SHARES_COUNT:
           return String.format("%d", share.getCount());
         case START_QUOTE:
           return String.format("%.2f", share.getQuote());
         case START_VALUE:
-          return String.format("%.2f", share.getValue());
+          return String.format("%.2f", share.value());
         default:
       }
 
@@ -239,7 +239,7 @@ public class DataViewerWindow extends JFrame {
           case CURRENT_QUOTE:
             return String.format(Util.FORMAT_MONEY, currentShare.getQuote());
           case CURRENT_VALUE:
-            return String.format(Util.FORMAT_MONEY, currentShare.getValue());
+            return String.format(Util.FORMAT_MONEY, currentShare.value());
           case CURRENT_PROFIT:
             return String.format("%s (%s)", Util.diff(share, currentShare), Util.percentageSigned(share, currentShare));
           case YEARLY_RATE:
@@ -255,17 +255,19 @@ public class DataViewerWindow extends JFrame {
         case START_VALUE:
           return "Sum:";
         case CURRENT_QUOTE:
-          return String.format(Util.FORMAT_MONEY, myWallet.getValue());
+          return String.format(Util.FORMAT_MONEY, myWallet.value());
         default:
       }
 
       return currentWallet.map((wallet) -> {
         switch (columnIndex) {
           case CURRENT_VALUE:
-            return String.format(Util.FORMAT_MONEY, wallet.getValue());
+            return String.format(Util.FORMAT_MONEY, wallet.value());
           case CURRENT_PROFIT:
             return String.format("%s (%s)", Util.diff(myWallet, wallet),
                 Util.percentageSigned(myWallet, wallet));
+          case YEARLY_RATE:
+            return String.format("%s", Util.yearlyRate(myWallet, wallet));
           default:
             return "";
         }

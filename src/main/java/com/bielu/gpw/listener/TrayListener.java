@@ -63,7 +63,7 @@ public class TrayListener implements ChangeListener<Wallet> {
         sb.append(String.format(getFormat(cur.getName()), cur.getName(), cur.getQuote(), Util.percentageSigned(wal, cur)));
       }
     }
-    sb.append(String.format("Total:\t\t" + Util.FORMAT_MONEY + "\t(%s)", current.getValue(), Util.percentageSigned(original, current)));
+    sb.append(String.format("Total:\t\t" + Util.FORMAT_MONEY + "\t(%s)", current.value(), Util.percentageSigned(original, current)));
   }
 
   private String getFormat(String name) {

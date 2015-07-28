@@ -43,7 +43,7 @@ public class DataWriterListener implements ChangeListener<Wallet> {
             cur.getName(), cur.getQuote(), Util.percentageSigned(wal, cur)));
       }
     }
-    out.write(String.format("%s: " + Util.FORMAT_MONEY + "\n", formatter.format(new Date()), current.getValue()));
+    out.write(String.format("%s: " + Util.FORMAT_MONEY + "\n", formatter.format(new Date()), current.value()));
     out.close();
   }
 }

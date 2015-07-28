@@ -28,16 +28,16 @@ public class LoggingListener implements ChangeListener<Wallet> {
   }
 
   private void printResults(Wallet current) {
-    LOG.info(String.format("You invested: " + Util.FORMAT_MONEY, myWallet.getValue()));
-    LOG.info(String.format("You have: " + Util.FORMAT_MONEY, current.getValue()));
+    LOG.info(String.format("You invested: " + Util.FORMAT_MONEY, myWallet.value()));
+    LOG.info(String.format("You have: " + Util.FORMAT_MONEY, current.value()));
 
     if (myWallet.compareTo(current) > 0) {
       LOG.info(String.format("You lost: " + Util.FORMAT_MONEY + " (" + Util.FORMAT_PERCENT + ")",
-          myWallet.getValue().subtract(current.getValue(), MathContext.DECIMAL32),
+          myWallet.value().subtract(current.value(), MathContext.DECIMAL32),
           Util.percentage(myWallet, current)));
     } else {
       LOG.info(String.format("You earned: " + Util.FORMAT_MONEY + " (" + Util.FORMAT_PERCENT+ ")", 
-          current.getValue().subtract(myWallet.getValue()),
+          current.value().subtract(myWallet.value()),
           Util.percentage(myWallet, current)));
     }
   }

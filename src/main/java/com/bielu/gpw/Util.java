@@ -1,13 +1,12 @@
 package com.bielu.gpw;
 
-import java.math.BigDecimal;
-
 import static java.math.MathContext.DECIMAL128;
 
+import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 
-import com.bielu.gpw.domain.ShareInfo;
+import com.bielu.gpw.domain.Investment;
 import com.bielu.gpw.domain.Wallet;
 
 public final class Util {
@@ -42,32 +41,20 @@ public final class Util {
     return sign;
   }
 
-  public static BigDecimal percentage(Wallet originalValue, Wallet changedValue) {
-    return percentage(originalValue.getValue(), changedValue.getValue());
+  public static BigDecimal percentage(Investment originalValue, Investment changedValue) {
+    return percentage(originalValue.value(), changedValue.value());
   }
 
-  public static BigDecimal percentage(ShareInfo originalValue, ShareInfo changedValue) {
-    return percentage(originalValue.getValue(), changedValue.getValue());
+  public static String percentageSigned(Investment originalValue, Investment changedValue) {
+    return percentageSigned(originalValue.value(), changedValue.value());
   }
 
-  public static String percentageSigned(Wallet originalValue, Wallet changedValue) {
-    return percentageSigned(originalValue.getValue(), changedValue.getValue());
+  public static String diff(Investment originalValue, Investment changedValue, BigDecimal tax) {
+    return diff(originalValue.value(), changedValue.value(), tax);
   }
 
-  public static String percentageSigned(ShareInfo originalValue, ShareInfo changedValue) {
-    return percentageSigned(originalValue.getValue(), changedValue.getValue());
-  }
-
-  public static String diff(Wallet originalValue, Wallet changedValue, BigDecimal tax) {
-    return diff(originalValue.getValue(), changedValue.getValue(), tax);
-  }
-
-  public static String diff(Wallet originalValue, Wallet changedValue) {
-    return diff(originalValue.getValue(), changedValue.getValue(), BigDecimal.ONE);
-  }
-
-  public static String diff(ShareInfo originalValue, ShareInfo changedValue) {
-    return diff(originalValue.getValue(), changedValue.getValue(), BigDecimal.ONE);
+  public static String diff(Investment originalValue, Investment changedValue) {
+    return diff(originalValue.value(), changedValue.value(), BigDecimal.ONE);
   }
 
   public static String diff(BigDecimal originalValue, BigDecimal changedValue, BigDecimal tax) {
@@ -83,17 +70,17 @@ public final class Util {
     return String.format("%s" + FORMAT_MONEY, sign, diff.abs());
   }
 
-  public static String yearlyRate(ShareInfo original, ShareInfo current) {
+  public static String yearlyRate(Investment original, Investment current) {
     BigDecimal rate = percentage(original, current);
 
-    long period = new Date().getTime() - original.getStartDate().getTime();
+    long period = new Date().getTime() - original.startDate().getTime();
     BigDecimal days = BigDecimal.valueOf((period / MILLIS_IN_A_DAY) + 1);
     if (days.compareTo(DAYS_IN_A_YEAR) < 0) {
       days = DAYS_IN_A_YEAR;
     }
 
     BigDecimal yearlyRate = rate.multiply(DAYS_IN_A_YEAR, DECIMAL128).divide(days, DECIMAL128);
-    return String.format("%s" + FORMAT_PERCENT, sign(original.getValue(), current.getValue()), yearlyRate);
+    return String.format("%s" + FORMAT_PERCENT, sign(original.value(), current.value()), yearlyRate);
   }
 
   public static boolean isMarketOpen() {
@@ -112,7 +99,7 @@ public final class Util {
   public static boolean isThresholdReached(Wallet current, Wallet checkPoint) {
     boolean notify = false;
     for (int i = 0; i < checkPoint.size(); i++) {
-      if (current.getShareInfo(i).getValue().intValue() == 0) {
+      if (current.getShareInfo(i).value().intValue() == 0) {
         notify = true;
         continue;
       }

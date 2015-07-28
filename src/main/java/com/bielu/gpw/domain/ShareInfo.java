@@ -6,7 +6,7 @@ import java.util.Date;
 
 import com.bielu.gpw.Util;
 
-public class ShareInfo implements Comparable<ShareInfo> {
+public class ShareInfo implements Comparable<ShareInfo>, Investment {
 
   private final String name;
   private final BigDecimal quote;
@@ -58,8 +58,8 @@ public class ShareInfo implements Comparable<ShareInfo> {
     builder.name = one.getName();
     builder.quote = one.getQuote().doubleValue();
     builder.sharesCount = -1;
-    builder.value = one.getValue().add(two.getValue()).doubleValue();
-    builder.startDate = one.getStartDate();
+    builder.value = one.value.add(two.value).doubleValue();
+    builder.startDate = one.startDate;
     return new ShareInfo(builder);
   }
 
@@ -97,7 +97,8 @@ public class ShareInfo implements Comparable<ShareInfo> {
     return quote;
   }
 
-  public BigDecimal getValue() {
+  @Override
+  public BigDecimal value() {
     return value;
   }
 
@@ -109,8 +110,9 @@ public class ShareInfo implements Comparable<ShareInfo> {
     return error;
   }
 
-  public Date getStartDate() {
-    return startDate;
+  @Override
+  public Date startDate() {
+    return (Date) startDate.clone();
   }
 
   public boolean hasError() {
