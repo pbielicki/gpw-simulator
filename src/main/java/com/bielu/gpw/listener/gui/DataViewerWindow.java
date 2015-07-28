@@ -237,9 +237,9 @@ public class DataViewerWindow extends JFrame {
         ShareInfo currentShare = wallet.getShareInfo(rowIndex);
         switch (columnIndex) {
           case CURRENT_QUOTE:
-            return String.format("%.2f", currentShare.getQuote());
+            return String.format(Util.FORMAT_MONEY, currentShare.getQuote());
           case CURRENT_VALUE:
-            return String.format("%.2f", currentShare.getValue());
+            return String.format(Util.FORMAT_MONEY, currentShare.getValue());
           case CURRENT_PROFIT:
             return String.format("%s (%s)", Util.diff(share, currentShare), Util.percentageSigned(share, currentShare));
           case YEARLY_RATE:
@@ -255,14 +255,14 @@ public class DataViewerWindow extends JFrame {
         case START_VALUE:
           return "Sum:";
         case CURRENT_QUOTE:
-          return String.format("%.2f", myWallet.getWalletValue());
+          return String.format(Util.FORMAT_MONEY, myWallet.getWalletValue());
         default:
       }
 
       return currentWallet.map((wallet) -> {
         switch (columnIndex) {
           case CURRENT_VALUE:
-            return String.format("%.2f", wallet.getWalletValue());
+            return String.format(Util.FORMAT_MONEY, wallet.getWalletValue());
           case CURRENT_PROFIT:
             return String.format("%s (%s)", Util.diff(myWallet, wallet),
                 Util.percentageSigned(myWallet, wallet));
@@ -282,7 +282,7 @@ public class DataViewerWindow extends JFrame {
       return currentWallet.map((wallet) -> {
         switch (columnIndex) {
           case CURRENT_PROFIT:
-            return String.format("%s", Util.diff(myWallet, wallet, Util.TAX));
+            return String.format("%s", Util.diff(myWallet, wallet, Util.NET_PROFIT_RATE));
           default:
             return "";
         }

@@ -59,7 +59,7 @@ public class QuoteReaderTask implements Runnable {
     URL url = new URL(Configuration.getInstance().getQuotesUrl());
     String quotesPage = IOUtils.toString(url.openStream());
     LOG.info("Quotes page size: " + quotesPage.length() / 1024 + " KB");
-    List<ShareInfo> result = new ArrayList<ShareInfo>();
+    List<ShareInfo> result = new ArrayList<>();
     for (ShareInfo share : myWallet.getShareInfoList()) {
       result.add(getQuote(share, quotesPage.toString()));
     }

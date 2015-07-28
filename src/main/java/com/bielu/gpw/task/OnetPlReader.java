@@ -47,7 +47,7 @@ public class OnetPlReader implements Callable<List<Recommendation>> {
   }
 
   private List<Recommendation> getRecommendations(String webPage) {
-    List<Recommendation> result = new ArrayList<Recommendation>();
+    List<Recommendation> result = new ArrayList<>();
     int idx = webPage.indexOf("<tbody>");
     int loopCount = 0;
 

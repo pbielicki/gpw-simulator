@@ -7,6 +7,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.bielu.gpw.Util;
+
 public class Wallet implements Comparable<Wallet> {
 
   private final List<ShareInfo> shareInfoList;
@@ -16,7 +18,7 @@ public class Wallet implements Comparable<Wallet> {
   public Wallet(List<ShareInfo> shareInfoList) {
     this.shareInfoList = Collections.unmodifiableList(shareInfoList);
 
-    Set<String> set = new HashSet<String>();
+    Set<String> set = new HashSet<>();
     for (ShareInfo share : shareInfoList) {
       if (share != null) {
         set.add(share.getName());
@@ -62,6 +64,6 @@ public class Wallet implements Comparable<Wallet> {
 
   @Override
   public String toString() {
-    return String.format("Wallet contains %d shares of value %.2f", shareInfoList.size(), walletValue);
+    return String.format("Wallet contains %d shares of value " + Util.FORMAT_MONEY, shareInfoList.size(), walletValue);
   }
 }
