@@ -63,14 +63,14 @@ public class TrayListener implements ChangeListener<Wallet> {
         sb.append(String.format(getFormat(cur.getName()), cur.getName(), cur.getQuote(), Util.percentageSigned(wal, cur)));
       }
     }
-    sb.append(String.format("Total:\t\t" + Util.FORMAT_MONEY + "\t(%s)", current.getWalletValue(), Util.percentageSigned(original, current)));
+    sb.append(String.format("Total:\t\t" + Util.FORMAT_MONEY + "\t(%s)", current.getValue(), Util.percentageSigned(original, current)));
   }
 
   private String getFormat(String name) {
     if (name.length() < X7) {
-      return "%s\t\t%.3f\t(%s)\n";
+      return "%s\t\t" + Util.FORMAT_MONEY + "\t(%s)\n";
     }
-    return "%s\t%.3f\t(%s)\n";
+    return "%s\t" + Util.FORMAT_MONEY + "\t(%s)\n";
   }
 
   private String getErrorFormat(String name) {

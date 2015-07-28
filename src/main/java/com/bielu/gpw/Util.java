@@ -43,7 +43,7 @@ public final class Util {
   }
 
   public static BigDecimal percentage(Wallet originalValue, Wallet changedValue) {
-    return percentage(originalValue.getWalletValue(), changedValue.getWalletValue());
+    return percentage(originalValue.getValue(), changedValue.getValue());
   }
 
   public static BigDecimal percentage(ShareInfo originalValue, ShareInfo changedValue) {
@@ -51,7 +51,7 @@ public final class Util {
   }
 
   public static String percentageSigned(Wallet originalValue, Wallet changedValue) {
-    return percentageSigned(originalValue.getWalletValue(), changedValue.getWalletValue());
+    return percentageSigned(originalValue.getValue(), changedValue.getValue());
   }
 
   public static String percentageSigned(ShareInfo originalValue, ShareInfo changedValue) {
@@ -59,11 +59,11 @@ public final class Util {
   }
 
   public static String diff(Wallet originalValue, Wallet changedValue, BigDecimal tax) {
-    return diff(originalValue.getWalletValue(), changedValue.getWalletValue(), tax);
+    return diff(originalValue.getValue(), changedValue.getValue(), tax);
   }
 
   public static String diff(Wallet originalValue, Wallet changedValue) {
-    return diff(originalValue.getWalletValue(), changedValue.getWalletValue(), BigDecimal.ONE);
+    return diff(originalValue.getValue(), changedValue.getValue(), BigDecimal.ONE);
   }
 
   public static String diff(ShareInfo originalValue, ShareInfo changedValue) {

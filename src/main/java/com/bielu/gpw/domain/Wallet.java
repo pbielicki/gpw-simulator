@@ -13,7 +13,7 @@ public class Wallet implements Comparable<Wallet> {
 
   private final List<ShareInfo> shareInfoList;
   private final Set<String> shareNameSet;
-  private final BigDecimal walletValue;
+  private final BigDecimal value;
 
   public Wallet(List<ShareInfo> shareInfoList) {
     this.shareInfoList = Collections.unmodifiableList(shareInfoList);
@@ -30,7 +30,7 @@ public class Wallet implements Comparable<Wallet> {
     for (ShareInfo share : shareInfoList) {
       value = value.add(share.getValue(), MathContext.DECIMAL32);
     }
-    this.walletValue = value;
+    this.value = value;
   }
 
   public int size() {
@@ -45,8 +45,8 @@ public class Wallet implements Comparable<Wallet> {
     return shareInfoList;
   }
 
-  public BigDecimal getWalletValue() {
-    return walletValue;
+  public BigDecimal getValue() {
+    return value;
   }
 
   public boolean contains(String shareName) {
@@ -59,11 +59,11 @@ public class Wallet implements Comparable<Wallet> {
 
   @Override
   public int compareTo(Wallet o) {
-    return this.walletValue.compareTo(o.walletValue);
+    return this.value.compareTo(o.value);
   }
 
   @Override
   public String toString() {
-    return String.format("Wallet contains %d shares of value " + Util.FORMAT_MONEY, shareInfoList.size(), walletValue);
+    return String.format("Wallet contains %d shares of value " + Util.FORMAT_MONEY, shareInfoList.size(), value);
   }
 }

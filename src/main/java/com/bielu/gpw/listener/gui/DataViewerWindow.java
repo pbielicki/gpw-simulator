@@ -255,14 +255,14 @@ public class DataViewerWindow extends JFrame {
         case START_VALUE:
           return "Sum:";
         case CURRENT_QUOTE:
-          return String.format(Util.FORMAT_MONEY, myWallet.getWalletValue());
+          return String.format(Util.FORMAT_MONEY, myWallet.getValue());
         default:
       }
 
       return currentWallet.map((wallet) -> {
         switch (columnIndex) {
           case CURRENT_VALUE:
-            return String.format(Util.FORMAT_MONEY, wallet.getWalletValue());
+            return String.format(Util.FORMAT_MONEY, wallet.getValue());
           case CURRENT_PROFIT:
             return String.format("%s (%s)", Util.diff(myWallet, wallet),
                 Util.percentageSigned(myWallet, wallet));

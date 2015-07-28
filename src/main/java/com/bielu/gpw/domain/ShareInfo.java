@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.math.MathContext;
 import java.util.Date;
 
+import com.bielu.gpw.Util;
+
 public class ShareInfo implements Comparable<ShareInfo> {
 
   private final String name;
@@ -168,7 +170,8 @@ public class ShareInfo implements Comparable<ShareInfo> {
 
   @Override
   public String toString() {
-    return String.format("<ShareInfo '%s' (%.2f) - %.2f shares of total value %.2f>", name, quote, sharesCount, value);
+    return String.format("<ShareInfo '%s' (" + Util.FORMAT_MONEY + ") - " + Util.FORMAT_MONEY
+        + " shares of total value " + Util.FORMAT_MONEY + ">", name, quote, sharesCount, value);
   }
 
   private static final class ShareBuilder {
