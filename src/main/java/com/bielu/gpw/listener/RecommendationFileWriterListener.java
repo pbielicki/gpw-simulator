@@ -3,6 +3,8 @@ package com.bielu.gpw.listener;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -32,6 +34,8 @@ public class RecommendationFileWriterListener implements ChangeListener<List<Rec
     }
 
     try {
+      out.write(new SimpleDateFormat("yyyy-MM-dd HH:ss").format(new Date()).getBytes());
+      out.write(System.lineSeparator().getBytes());
       for (Recommendation rec : source) {
         out.write(rec.toString().getBytes());
         out.write(System.lineSeparator().getBytes());
