@@ -12,8 +12,10 @@ import com.bielu.gpw.domain.Wallet;
 
 public class MoneyPlReader implements Callable<List<Recommendation>> {
 
-  private static final String START = "<td class=\"m1\" colspan=7 height=40>Rekomendacje</td>";
-  private static final String END = "<a href=\"rekomendacje,2.html\" class=\"next ns8\">dalej</a>";
+  private static final String TD_BEGIN = "<td class=\"ar\">";
+  private static final String RECCOMENDATION_START = "<a class=\"link\" href=\"http://www.money.pl/gielda/spolki-gpw/";
+  private static final String START = "<div class=\"hd inbox\">Rekomendacje</div>";
+  private static final String END = "Następna strona";
   private static final int X3 = 3;
   private static final int MAX_LOOP_COUNT = 20;
 
@@ -52,25 +54,26 @@ public class MoneyPlReader implements Callable<List<Recommendation>> {
     int loopCount = 0;
 
     main: while (idx != -1 && loopCount < MAX_LOOP_COUNT) {
-      idx = webPage.indexOf("informacje.html\" class=\"ns\">", idx + 1);
+      idx = webPage.indexOf(RECCOMENDATION_START, idx + 1);
       if (idx == -1) {
         break;
       }
-      idx = idx + "informacje.html\" class=\"ns\">".length();
+      idx = webPage.indexOf(">", idx) + 1;
       String name = webPage.substring(idx, webPage.indexOf("<", idx + 1)).trim();
 
       for (int i = 0; i < X3; i++) {
-        idx = webPage.indexOf("<td>", idx + 1);
+        idx = webPage.indexOf(TD_BEGIN, idx + 1);
         if (idx == -1) {
           break main;
         }
       }
-      String price = webPage.substring(idx + "<td>".length(), webPage.indexOf("</td>", idx)).trim();
-      idx = webPage.indexOf("<td>", idx + 1);
+      String price = webPage.substring(idx + TD_BEGIN.length(), webPage.indexOf("</td>", idx)).trim();
+      idx = webPage.indexOf(TD_BEGIN, idx + 1);
       if (idx == -1) {
         break;
       }
-      String recText = webPage.substring(idx + "<td>".length(), webPage.indexOf("</td>", idx)).trim();
+      idx = webPage.indexOf(">", idx + TD_BEGIN.length()) + 1;
+      String recText = webPage.substring(idx, webPage.indexOf("<", idx)).trim();
 
       idx = webPage.indexOf("</tr>", idx);
 
