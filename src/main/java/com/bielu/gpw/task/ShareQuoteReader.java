@@ -52,26 +52,32 @@ public class ShareQuoteReader implements Runnable {
   }
 
   private Wallet getCurrentQuotes() throws IOException {
-    LOG.info("Reading share quotes from: " + Configuration.getInstance().getQuotesUrl());
-    URL url = new URL(Configuration.getInstance().getQuotesUrl());
-    String sharesPage = IOUtils.toString(url.openStream());
-    LOG.info("Quotes page size: " + sharesPage.length() / 1024 + " KB");
-    LOG.info("Reading mBank fund quotes from: " + Configuration.getInstance().getMbankFundsUrl());
-    url = new URL(Configuration.getInstance().getMbankFundsUrl());
-    String fundsPage = IOUtils.toString(url.openStream());
-    LOG.info("mBank funds page size: " + fundsPage.length() / 1024 + " KB");
-
+    String sharesPage = null;
+    String fundsPage = null;
     List<ShareInfo> result = new ArrayList<>();
     for (ShareInfo share : myWallet.getShareInfoList()) {
       switch (share.getShareType()) {
         case SHARE:
+          if (sharesPage == null) {
+            sharesPage = readUrl(Configuration.getInstance().getQuotesUrl());
+          }
           result.add(getShareQuote(share, sharesPage));
           break;
         case FUND:
+          if (fundsPage == null) {
+            fundsPage = readUrl(Configuration.getInstance().getMbankFundsUrl());
+          }
           result.add(getFundQuote(share, fundsPage));
       }
     }
     return new Wallet(result);
+  }
+  
+  private String readUrl(String url) throws IOException {
+    LOG.info("Reading: " + url);
+    String content = IOUtils.toString(new URL(url).openStream());
+    LOG.info("Content length: " + content.length() / 1024 + " KB");
+    return content;
   }
 
   private ShareInfo getShareQuote(ShareInfo share, String quotesPage) {
