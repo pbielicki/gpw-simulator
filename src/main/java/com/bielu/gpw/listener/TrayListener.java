@@ -10,7 +10,7 @@ import com.bielu.gpw.domain.Wallet;
 
 public class TrayListener implements ChangeListener<Wallet> {
 
-  private static final int X7 = 7;
+  private static final int SEVEN = 7;
 
   private final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
   private final Wallet myWallet;
@@ -29,10 +29,10 @@ public class TrayListener implements ChangeListener<Wallet> {
     }
 
     StringBuilder sb = new StringBuilder();
-    if (getCheckPoint() != current) {
+    /*if (getCheckPoint() != current) {
       appendDiff(getCheckPoint(), current, sb);
       sb.append("\n---\n");
-    }
+    }*/
     appendDiff(myWallet, getCheckPoint(), sb);
 
     String currentMessageTitle = String.format("%s - %s", "GPW Notifier", formatter.format(new Date()));
@@ -67,14 +67,14 @@ public class TrayListener implements ChangeListener<Wallet> {
   }
 
   private String getFormat(String name) {
-    if (name.length() < X7) {
+    if (name.length() < SEVEN) {
       return "%s\t\t" + Util.FORMAT_MONEY + "\t(%s)\n";
     }
     return "%s\t" + Util.FORMAT_MONEY + "\t(%s)\n";
   }
 
   private String getErrorFormat(String name) {
-    if (name.length() < X7) {
+    if (name.length() < SEVEN) {
       return "%s\t\t%s\n";
     }
     return "%s\t%s\n";

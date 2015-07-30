@@ -225,11 +225,11 @@ public class DataViewerWindow extends JFrame {
         case INVESTMENT_DATE:
           return format.format(share.startDate());
         case SHARES_COUNT:
-          return String.format("%d", share.getCount());
+          return String.format(Util.FORMAT_MONEY, share.getCount());
         case START_QUOTE:
-          return String.format("%.2f", share.getQuote());
+          return String.format(Util.FORMAT_MONEY, share.getQuote());
         case START_VALUE:
-          return String.format("%.2f", share.value());
+          return String.format(Util.FORMAT_MONEY, share.value());
         default:
       }
 

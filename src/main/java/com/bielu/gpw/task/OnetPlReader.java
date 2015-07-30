@@ -15,7 +15,7 @@ public class OnetPlReader implements Callable<List<Recommendation>> {
   private static final String START = "<table id=\"recommendTable\">";
   private static final String END = "</table>";
   private static final int MAX_LOOP_COUNT = 20;
-  private static final int X3 = 3;
+  private static final int THREE = 3;
 
   private final Wallet myWallet;
 
@@ -57,7 +57,7 @@ public class OnetPlReader implements Callable<List<Recommendation>> {
         idx = webPage.indexOf(">", idx);
         String name = webPage.substring(idx + 1, webPage.indexOf("<", idx + 1)).trim();
 
-        for (int i = 0; i < X3; i++) {
+        for (int i = 0; i < THREE; i++) {
           idx = webPage.indexOf("<td>", idx + 1);
           if (idx == -1) {
             break main;

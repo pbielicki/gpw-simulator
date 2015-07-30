@@ -16,18 +16,19 @@ import com.bielu.gpw.domain.ShareInfo;
 import com.bielu.gpw.domain.Wallet;
 import com.bielu.gpw.listener.ChangeListener;
 
-public class QuoteReaderTask implements Runnable {
+public class ShareQuoteReader implements Runnable {
 
-  private static final Log LOG = LogFactory.getLog(QuoteReaderTask.class);
+  private static final Log LOG = LogFactory.getLog(ShareQuoteReader.class);
   private static final int TWO = 2;
   private static final int FIVE = 5;
-  private static final String QUOTE_DELIM = "<td>";
+  private static final String SHARE_QUOTE_DELIM = "<td>";
+  private static final String FUND_QUOTE_DELIM = "\";\"";
 
   private final Wallet myWallet;
   private final List<ChangeListener<Wallet>> listeners;
   private final List<ChangeListener<Object>> objectListeners;
 
-  public QuoteReaderTask(Wallet myWallet, List<ChangeListener<Wallet>> listeners,
+  public ShareQuoteReader(Wallet myWallet, List<ChangeListener<Wallet>> listeners,
       List<ChangeListener<Object>> objectListeners) {
 
     this.myWallet = myWallet;
@@ -51,18 +52,29 @@ public class QuoteReaderTask implements Runnable {
   }
 
   private Wallet getCurrentQuotes() throws IOException {
-    LOG.info("Reading quotes from: " + Configuration.getInstance().getQuotesUrl());
+    LOG.info("Reading share quotes from: " + Configuration.getInstance().getQuotesUrl());
     URL url = new URL(Configuration.getInstance().getQuotesUrl());
-    String quotesPage = IOUtils.toString(url.openStream());
-    LOG.info("Quotes page size: " + quotesPage.length() / 1024 + " KB");
+    String sharesPage = IOUtils.toString(url.openStream());
+    LOG.info("Quotes page size: " + sharesPage.length() / 1024 + " KB");
+    LOG.info("Reading mBank fund quotes from: " + Configuration.getInstance().getMbankFundsUrl());
+    url = new URL(Configuration.getInstance().getMbankFundsUrl());
+    String fundsPage = IOUtils.toString(url.openStream());
+    LOG.info("mBank funds page size: " + fundsPage.length() / 1024 + " KB");
+
     List<ShareInfo> result = new ArrayList<>();
     for (ShareInfo share : myWallet.getShareInfoList()) {
-      result.add(getQuote(share, quotesPage.toString()));
+      switch (share.getShareType()) {
+        case SHARE:
+          result.add(getShareQuote(share, sharesPage));
+          break;
+        case FUND:
+          result.add(getFundQuote(share, fundsPage));
+      }
     }
     return new Wallet(result);
   }
 
-  private ShareInfo getQuote(ShareInfo share, String quotesPage) {
+  private ShareInfo getShareQuote(ShareInfo share, String quotesPage) {
     int idx = quotesPage.indexOf(String.format(">%s<", share.getName()));
     Optional<ShareInfo> shareInfo = Optional.empty();
     int tmpIdx = idx;
@@ -70,13 +82,13 @@ public class QuoteReaderTask implements Runnable {
       if (idx > -1) {
         // get the reference quote (always present even if market is closed)
         for (int i = 0; i < TWO; i++) {
-          tmpIdx = quotesPage.indexOf(QUOTE_DELIM, tmpIdx + 1);
+          tmpIdx = quotesPage.indexOf(SHARE_QUOTE_DELIM, tmpIdx + 1);
         }
         
-        int quoteIdx = tmpIdx + QUOTE_DELIM.length();
+        int quoteIdx = tmpIdx + SHARE_QUOTE_DELIM.length();
         int quoteEndIdx = quotesPage.indexOf("<", quoteIdx);
         double quote = Double.parseDouble(escapeHtml(quotesPage.substring(quoteIdx, quoteEndIdx)));
-        shareInfo = Optional.of(ShareInfo.newInstanceFromSharesCount(share.getName(), quote, share.getCount()));
+        shareInfo = Optional.of(share.newInstanceForQuote(quote));
       }
     } catch (RuntimeException e) {
       LOG.info(String.format("Share reference quotes [%s] not found", share.getName()));
@@ -86,25 +98,49 @@ public class QuoteReaderTask implements Runnable {
       if (idx > -1) {
         // get the current quote (present only if market is open)
         for (int i = 0; i < FIVE; i++) {
-          tmpIdx = quotesPage.indexOf(QUOTE_DELIM, tmpIdx + 1);
+          tmpIdx = quotesPage.indexOf(SHARE_QUOTE_DELIM, tmpIdx + 1);
         }
         
-        int quoteIdx = tmpIdx + QUOTE_DELIM.length();
+        int quoteIdx = tmpIdx + SHARE_QUOTE_DELIM.length();
         int quoteEndIdx = quotesPage.indexOf("<", quoteIdx);
         double quote = Double.parseDouble(escapeHtml(quotesPage.substring(quoteIdx, quoteEndIdx)));
-        return ShareInfo.newInstanceFromSharesCount(share.getName(), quote, share.getCount());
+        return share.newInstanceForQuote(quote);
       }
     } catch (RuntimeException e) {
       return shareInfo.orElseGet(() -> {
         LOG.warn(String.format("Share quotes [%s] not found", share.getName()), e);
-        return ShareInfo.newErrorInstance(share, "Could not retrieve quotes"); 
+        return ShareInfo.newErrorInstance(share, "Could not retrieve share quotes"); 
       });
     }
 
     LOG.warn(String.format("Share quotes [%s] not found", share.getName()));
-    return shareInfo.orElse(ShareInfo.newErrorInstance(share, "Could not retrieve quotes"));
+    return shareInfo.orElse(ShareInfo.newErrorInstance(share, "Could not retrieve share quotes"));
   }
 
+  private ShareInfo getFundQuote(ShareInfo share, String quotesPage) {
+    int idx = quotesPage.indexOf(String.format("\"%s", share.getName()));
+    Optional<ShareInfo> shareInfo = Optional.empty();
+    int tmpIdx = idx;
+    try {
+      if (idx > -1) {
+        tmpIdx = quotesPage.indexOf(FUND_QUOTE_DELIM, tmpIdx + 1);
+        
+        int quoteIdx = tmpIdx + FUND_QUOTE_DELIM.length();
+        int quoteEndIdx = quotesPage.indexOf("\";", quoteIdx);
+        double quote = Double.parseDouble(escapeHtml(quotesPage.substring(quoteIdx, quoteEndIdx)));
+        return share.newInstanceForQuote(quote);
+      }
+    } catch (RuntimeException e) {
+      return shareInfo.orElseGet(() -> {
+        LOG.warn(String.format("Fund quotes [%s] not found", share.getName()), e);
+        return ShareInfo.newErrorInstance(share, "Could not retrieve fund quotes"); 
+      });
+    }
+
+    LOG.warn(String.format("Fund quotes [%s] not found", share.getName()));
+    return shareInfo.orElse(ShareInfo.newErrorInstance(share, "Could not retrieve fund quotes"));
+  }
+  
   private String escapeHtml(String html) {
     return html.replace(",", ".")
                .replace("&nbsp;", "");

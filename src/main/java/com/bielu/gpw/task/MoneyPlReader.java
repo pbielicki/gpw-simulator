@@ -16,7 +16,7 @@ public class MoneyPlReader implements Callable<List<Recommendation>> {
   private static final String RECCOMENDATION_START = "<a class=\"link\" href=\"http://www.money.pl/gielda/spolki-gpw/";
   private static final String START = "<div class=\"hd inbox\">Rekomendacje</div>";
   private static final String END = "Następna strona";
-  private static final int X3 = 3;
+  private static final int THREE = 3;
   private static final int MAX_LOOP_COUNT = 20;
 
   private final Wallet myWallet;
@@ -61,7 +61,7 @@ public class MoneyPlReader implements Callable<List<Recommendation>> {
       idx = webPage.indexOf(">", idx) + 1;
       String name = webPage.substring(idx, webPage.indexOf("<", idx + 1)).trim();
 
-      for (int i = 0; i < X3; i++) {
+      for (int i = 0; i < THREE; i++) {
         idx = webPage.indexOf(TD_BEGIN, idx + 1);
         if (idx == -1) {
           break main;

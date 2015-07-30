@@ -15,4 +15,5 @@
 
   <recommendation fileName="recommendations.txt" />
   <quotes url="http://www.gpw.pl/ajaxindex.php?action=GPWQuotations&amp;start=showTable&amp;tab=all&amp;lang=PL&amp;full=1" />
+  <mbankFunds url="https://www.mbank.pl/inc/sfi/sfi_do_csv/?sh=0\,3\,4\,5\,6\,7\,8\,9\,11\,13&amp;sorted=StopaZw1r_down&amp;show=all&amp;bank=1" />
 </gpw>

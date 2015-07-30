@@ -11,42 +11,31 @@ public class ShareInfo implements Comparable<ShareInfo>, Investment {
   private final String name;
   private final BigDecimal quote;
   private final BigDecimal value;
-  private final int sharesCount;
+  private final BigDecimal sharesCount;
   private final String error;
   private final Date startDate;
+  private final ShareTypeEnum shareType;
 
   public static ShareInfo newErrorInstance(ShareInfo original, String error) {
     ShareBuilder builder = new ShareBuilder();
     builder.name = original.name;
     builder.quote = original.quote.doubleValue();
-    builder.sharesCount = original.sharesCount;
+    builder.sharesCount = original.sharesCount.doubleValue();
     builder.value = original.value.doubleValue();
     builder.startDate = original.startDate;
     builder.error = error;
+    builder.shareType = original.shareType;
     return new ShareInfo(builder);
   }
 
-  public static ShareInfo newInstanceFromValue(String name, double quote, double value) {
+  public ShareInfo newInstanceForQuote(double quote) {
     ShareBuilder builder = new ShareBuilder();
     builder.name = name;
     builder.quote = quote;
-    builder.sharesCount = -1;
-    builder.value = value;
-    builder.startDate = new Date(0);
-    return new ShareInfo(builder);
-  }
-
-  public static ShareInfo newInstanceFromSharesCount(String name, double quote, int sharesCount) {
-    return newInstanceFromSharesCount(name, quote, sharesCount, new Date());
-  }
-
-  public static ShareInfo newInstanceFromSharesCount(String name, double quote, int sharesCount, Date startDate) {
-    ShareBuilder builder = new ShareBuilder();
-    builder.name = name;
-    builder.quote = quote;
-    builder.sharesCount = sharesCount;
+    builder.sharesCount = sharesCount.doubleValue();
     builder.value = -1;
     builder.startDate = startDate;
+    builder.shareType = shareType;
     return new ShareInfo(builder);
   }
 
@@ -72,21 +61,14 @@ public class ShareInfo implements Comparable<ShareInfo>, Investment {
     name = builder.name;
     quote = BigDecimal.valueOf(builder.quote);
     startDate = builder.startDate;
+    shareType = builder.shareType;
     if (builder.value > 0) {
       value = BigDecimal.valueOf(builder.value);
-      sharesCount = value.divide(quote, MathContext.DECIMAL128).intValue();
+      sharesCount = value.divide(quote, MathContext.DECIMAL128);
     } else {
-      sharesCount = builder.sharesCount;
+      sharesCount = BigDecimal.valueOf(builder.sharesCount);
       value = quote.multiply(BigDecimal.valueOf(builder.sharesCount), MathContext.DECIMAL128);
     }
-  }
-
-  public ShareInfo updateQuote(double newQuote, Date startDate) {
-    return newInstanceFromSharesCount(name, newQuote, sharesCount, startDate);
-  }
-
-  public ShareInfo updateCount(int newCount, Date startDate) {
-    return newInstanceFromSharesCount(name, quote.doubleValue(), newCount, startDate);
   }
 
   public String getName() {
@@ -102,12 +84,16 @@ public class ShareInfo implements Comparable<ShareInfo>, Investment {
     return value;
   }
 
-  public int getCount() {
+  public BigDecimal getCount() {
     return sharesCount;
   }
 
   public String getError() {
     return error;
+  }
+  
+  public ShareTypeEnum getShareType() {
+    return shareType;
   }
 
   @Override
@@ -176,12 +162,17 @@ public class ShareInfo implements Comparable<ShareInfo>, Investment {
         + " shares of total value " + Util.FORMAT_MONEY + ">", name, quote, sharesCount, value);
   }
 
-  private static final class ShareBuilder {
-    private String name;
-    private double quote;
-    private double value;
-    private int sharesCount;
-    private String error;
-    private Date startDate;
+  public static final class ShareBuilder {
+    public String name;
+    public double quote;
+    public double value;
+    public double sharesCount;
+    public String error;
+    public Date startDate;
+    public ShareTypeEnum shareType = ShareTypeEnum.SHARE;
+    
+    public ShareInfo buildShareInfo() {
+      return new ShareInfo(this);
+    }
   }
 }

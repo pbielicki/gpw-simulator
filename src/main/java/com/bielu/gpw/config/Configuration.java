@@ -19,6 +19,7 @@ public final class Configuration {
   private final XMLConfiguration config;
   private final String recommendationsFile;
   private final String quotesUrl;
+  private final String mbankFundsUrl;
 
   private static final Configuration CONFIGURATION = new Configuration();
 
@@ -42,6 +43,11 @@ public final class Configuration {
     return quotesUrl;
   }
 
+  public String getMbankFundsUrl() {
+    return mbankFundsUrl;
+  }
+
+  
   private Configuration() {
     config = new XMLConfiguration();
     try {
@@ -61,6 +67,7 @@ public final class Configuration {
     guiPluginList = configureGuiPlugins();
     recommendationsFile = config.getString("recommendation/@fileName");
     quotesUrl = config.getString("quotes/@url");
+    mbankFundsUrl = config.getString("mbankFunds/@url");
 
     config.clear();
   }

@@ -27,8 +27,8 @@ import com.bielu.gpw.listener.gui.SwingDataViewerListener;
 import com.bielu.gpw.listener.gui.plugin.TextOutputStream;
 import com.bielu.gpw.listener.gui.plugin.TextPrintStream;
 import com.bielu.gpw.listener.tray.RecommendationTrayListener;
-import com.bielu.gpw.task.QuoteReaderTask;
-import com.bielu.gpw.task.RecommendationReaderTask;
+import com.bielu.gpw.task.ShareQuoteReader;
+import com.bielu.gpw.task.RecommendationReader;
 
 public final class Runner {
 
@@ -115,8 +115,8 @@ public final class Runner {
     recListeners.add(new RecommendationTrayListener(monitor.getGpwTray()));
     recListeners.add(new RecommendationFileWriterListener());
 
-    monitor.scheduleAtFixedRate(new QuoteReaderTask(myWallet, quoteListeners, objectListeners), 0, 1, TimeUnit.MINUTES);
-    monitor.scheduleAtFixedRate(new RecommendationReaderTask(myWallet, recListeners, objectListeners), TEN_SECONDS,
+    monitor.scheduleAtFixedRate(new ShareQuoteReader(myWallet, quoteListeners, objectListeners), 0, 1, TimeUnit.MINUTES);
+    monitor.scheduleAtFixedRate(new RecommendationReader(myWallet, recListeners, objectListeners), TEN_SECONDS,
         HOUR, TimeUnit.SECONDS);
 
     return monitor;

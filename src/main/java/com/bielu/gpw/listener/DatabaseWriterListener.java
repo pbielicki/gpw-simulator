@@ -74,7 +74,7 @@ public class DatabaseWriterListener extends PropertiesConfig<Wallet> implements 
         st.setTimestamp(ACTION_TIME, new Timestamp(new Date().getTime()));
         st.setString(NAME, share.getName());
         st.setDouble(QUOTE, share.getQuote().doubleValue());
-        st.setDouble(COUNT, share.getCount());
+        st.setDouble(COUNT, share.getCount().doubleValue());
         st.addBatch();
       }
       st.executeBatch();

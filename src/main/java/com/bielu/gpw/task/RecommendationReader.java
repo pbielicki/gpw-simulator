@@ -18,9 +18,9 @@ import com.bielu.gpw.domain.Recommendation;
 import com.bielu.gpw.domain.Wallet;
 import com.bielu.gpw.listener.ChangeListener;
 
-public class RecommendationReaderTask implements Runnable {
+public class RecommendationReader implements Runnable {
 
-  private static final Log LOG = LogFactory.getLog(RecommendationReaderTask.class);
+  private static final Log LOG = LogFactory.getLog(RecommendationReader.class);
   private static final ThreadFactory THREAD_FACTORY = new GpwThreadFactory("RecommendationReader");
 
   private final List<ChangeListener<List<Recommendation>>> listeners;
@@ -28,7 +28,7 @@ public class RecommendationReaderTask implements Runnable {
   private final List<Callable<List<Recommendation>>> readers;
 
   @SuppressWarnings("serial")
-  public RecommendationReaderTask(final Wallet myWallet, List<ChangeListener<List<Recommendation>>> listeners,
+  public RecommendationReader(final Wallet myWallet, List<ChangeListener<List<Recommendation>>> listeners,
       List<ChangeListener<Object>> objectListeners) {
 
     this.listeners = Collections.unmodifiableList(listeners);

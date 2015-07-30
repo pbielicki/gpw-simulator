@@ -18,6 +18,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import com.bielu.gpw.domain.ShareInfo;
+import com.bielu.gpw.domain.ShareInfo.ShareBuilder;
+import com.bielu.gpw.domain.ShareTypeEnum;
 import com.bielu.gpw.domain.Wallet;
 
 public class GpwMonitor implements Closeable {
@@ -74,8 +76,16 @@ public class GpwMonitor implements Closeable {
         }
         
         String[] tmp = line.split(",");
-        ShareInfo share = ShareInfo.newInstanceFromSharesCount(tmp[0].trim(), Double.parseDouble(tmp[1].trim()),
-            Integer.parseInt(tmp[2].trim()), format.parse(tmp[3].trim()));
+        ShareBuilder builder = new ShareBuilder();
+        builder.name = tmp[0].trim();
+        builder.quote = Double.parseDouble(tmp[1].trim());
+        builder.sharesCount = Double.parseDouble(tmp[2].trim());
+        builder.value = -1;
+        builder.startDate = format.parse(tmp[3].trim());
+        if (tmp.length > 4) {
+          builder.shareType = ShareTypeEnum.valueOf(tmp[4].trim());
+        }
+        ShareInfo share = builder.buildShareInfo();
 
         if (shares.contains(share)) {
           ShareInfo prev = shares.get(shares.indexOf(share));
