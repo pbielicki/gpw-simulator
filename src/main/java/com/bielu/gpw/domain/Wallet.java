@@ -15,6 +15,7 @@ public class Wallet implements Comparable<Wallet>, Investment {
   private final List<ShareInfo> shareInfoList;
   private final Set<String> shareNameSet;
   private final BigDecimal value;
+  private final BigDecimal netValue;
   private final Date startDate;
 
   public Wallet(List<ShareInfo> shareInfoList) {
@@ -38,6 +39,7 @@ public class Wallet implements Comparable<Wallet>, Investment {
       value = value.add(share.value(), MathContext.DECIMAL32);
     }
     this.value = value;
+    this.netValue = value.multiply(Util.BROKERAGE_RATE);
   }
 
   public int size() {
@@ -55,6 +57,11 @@ public class Wallet implements Comparable<Wallet>, Investment {
   @Override
   public BigDecimal value() {
     return value;
+  }
+  
+  @Override
+  public BigDecimal netValue() {
+    return netValue;
   }
   
   @Override

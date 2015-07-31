@@ -34,7 +34,7 @@ public class DataViewerWindow extends JFrame {
   private static final long serialVersionUID = 1L;
   private static final Log LOG = LogFactory.getLog(DataViewerWindow.class);
   private static final int START_HEIGHT = 600;
-  private static final int START_WIDTH = 800;
+  private static final int START_WIDTH = 1024;
   private static final int MAIN_DIVIDER_LOCATION = 300;
   private static final int X10 = 10;
   private static final int X5 = 5;
@@ -148,11 +148,13 @@ public class DataViewerWindow extends JFrame {
     private static final int START_VALUE = 4;
     private static final int CURRENT_QUOTE = 5;
     private static final int CURRENT_VALUE = 6;
-    private static final int CURRENT_PROFIT = 7;
-    private static final int YEARLY_RATE = 8;
+    private static final int CURRENT_VALUE_NET = 7;
+    private static final int CURRENT_PROFIT = 8;
+    private static final int CURRENT_PROFIT_NET = 9;
+    private static final int YEARLY_RATE = 10;
 
     private static final int COLUMNS_COUNT = 5;
-    private static final int COLUMNS_COUNT_WITH_CURRENT = COLUMNS_COUNT + 4;
+    private static final int COLUMNS_COUNT_WITH_CURRENT = COLUMNS_COUNT + 6;
 
     private final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -160,7 +162,7 @@ public class DataViewerWindow extends JFrame {
     public String getColumnName(int column) {
       switch (column) {
         case COMPANY_SYMBOL:
-          return "Company Symbol";
+          return "Symbol";
         case INVESTMENT_DATE:
           return "Inv. Date";
         case SHARES_COUNT:
@@ -170,13 +172,17 @@ public class DataViewerWindow extends JFrame {
         case START_VALUE:
           return "Start Value";
         case CURRENT_QUOTE:
-          return "Current Quote";
+          return "Quote";
         case CURRENT_VALUE:
-          return "Current Value";
+          return "Value";
+        case CURRENT_VALUE_NET:
+          return "Value Net";
         case CURRENT_PROFIT:
-          return "Current Profit/Loss";
+          return "Profit";
+        case CURRENT_PROFIT_NET:
+          return "Profit Net";
         case YEARLY_RATE:
-          return "Yearly Rate";
+          return "Yearly (Gross)";
         default:
           return "";
       }
@@ -193,7 +199,7 @@ public class DataViewerWindow extends JFrame {
 
     @Override
     public int getRowCount() {
-      return myWallet.size() + 3;
+      return myWallet.size() + 2;
     }
 
     @Override
@@ -211,7 +217,7 @@ public class DataViewerWindow extends JFrame {
       }
 
       if (rowIndex == myWallet.size() + 2) {
-        return getNetWalletInfo(columnIndex);
+        return getWalletInfo(columnIndex);
       }
       
       return null;
@@ -240,8 +246,13 @@ public class DataViewerWindow extends JFrame {
             return String.format(Util.FORMAT_MONEY, currentShare.getQuote());
           case CURRENT_VALUE:
             return String.format(Util.FORMAT_MONEY, currentShare.value());
+          case CURRENT_VALUE_NET:
+            return String.format(Util.FORMAT_MONEY, currentShare.netValue());
           case CURRENT_PROFIT:
             return String.format("%s (%s)", Util.diff(share, currentShare), Util.percentageSigned(share, currentShare));
+          case CURRENT_PROFIT_NET:
+            return String.format("%s (%s)", Util.diff(share.value(), currentShare.netValue()), 
+                Util.percentageSigned(share.value(), currentShare.netValue()));
           case YEARLY_RATE:
             return String.format("%s", Util.yearlyRate(share, currentShare));
           default:
@@ -252,9 +263,9 @@ public class DataViewerWindow extends JFrame {
 
     private String getWalletInfo(int columnIndex) {
       switch (columnIndex) {
-        case START_VALUE:
+        case START_QUOTE:
           return "Sum:";
-        case CURRENT_QUOTE:
+        case START_VALUE:
           return String.format(Util.FORMAT_MONEY, myWallet.value());
         default:
       }
@@ -263,28 +274,16 @@ public class DataViewerWindow extends JFrame {
         switch (columnIndex) {
           case CURRENT_VALUE:
             return String.format(Util.FORMAT_MONEY, wallet.value());
+          case CURRENT_VALUE_NET:
+            return String.format(Util.FORMAT_MONEY, wallet.netValue());            
           case CURRENT_PROFIT:
             return String.format("%s (%s)", Util.diff(myWallet, wallet),
                 Util.percentageSigned(myWallet, wallet));
+          case CURRENT_PROFIT_NET:
+            return String.format("%s (%s)", Util.diff(myWallet.value(), wallet.netValue()),
+                Util.percentageSigned(myWallet.value(), wallet.netValue()));            
           case YEARLY_RATE:
             return String.format("%s", Util.yearlyRate(myWallet, wallet));
-          default:
-            return "";
-        }
-      }).orElse("");
-    }
-
-    private String getNetWalletInfo(int columnIndex) {
-      switch (columnIndex) {
-        case CURRENT_VALUE:
-          return "Net Profit/Loss:";
-        default:
-      }
-
-      return currentWallet.map((wallet) -> {
-        switch (columnIndex) {
-          case CURRENT_PROFIT:
-            return String.format("%s", Util.diff(myWallet, wallet, Util.NET_PROFIT_RATE));
           default:
             return "";
         }

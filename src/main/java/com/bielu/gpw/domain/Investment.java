@@ -7,5 +7,7 @@ public interface Investment {
 
   BigDecimal value();
   
+  BigDecimal netValue();
+  
   Date startDate();
 }

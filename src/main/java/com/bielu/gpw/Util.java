@@ -14,6 +14,7 @@ public final class Util {
   public static final int OPEN_HOUR = 8;
   public static final int CLOSE_HOUR = 18;
   public static final BigDecimal NET_PROFIT_RATE = BigDecimal.valueOf(0.81D); // 19% of tax
+  public static final BigDecimal BROKERAGE_RATE = BigDecimal.valueOf(0.9961D); // 0.39% of broker commission
   public static final String FORMAT_PERCENT = "%.1f%%";
   public static final String FORMAT_MONEY = "%.2f";
 
@@ -54,7 +55,11 @@ public final class Util {
   }
 
   public static String diff(Investment originalValue, Investment changedValue) {
-    return diff(originalValue.value(), changedValue.value(), BigDecimal.ONE);
+    return diff(originalValue.value(), changedValue.value());
+  }
+  
+  public static String diff(BigDecimal originalValue, BigDecimal changedValue) {
+    return diff(originalValue, changedValue, BigDecimal.ONE);
   }
 
   public static String diff(BigDecimal originalValue, BigDecimal changedValue, BigDecimal tax) {

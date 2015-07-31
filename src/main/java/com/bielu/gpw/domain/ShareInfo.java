@@ -11,6 +11,7 @@ public class ShareInfo implements Comparable<ShareInfo>, Investment {
   private final String name;
   private final BigDecimal quote;
   private final BigDecimal value;
+  private final BigDecimal netValue;
   private final BigDecimal sharesCount;
   private final String error;
   private final Date startDate;
@@ -69,6 +70,8 @@ public class ShareInfo implements Comparable<ShareInfo>, Investment {
       sharesCount = BigDecimal.valueOf(builder.sharesCount);
       value = quote.multiply(BigDecimal.valueOf(builder.sharesCount), MathContext.DECIMAL128);
     }
+    
+    netValue = value.multiply(Util.BROKERAGE_RATE);
   }
 
   public String getName() {
@@ -82,6 +85,11 @@ public class ShareInfo implements Comparable<ShareInfo>, Investment {
   @Override
   public BigDecimal value() {
     return value;
+  }
+  
+  @Override
+  public BigDecimal netValue() {
+    return netValue;
   }
 
   public BigDecimal getCount() {
