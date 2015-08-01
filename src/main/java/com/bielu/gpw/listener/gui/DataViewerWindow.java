@@ -217,7 +217,7 @@ public class DataViewerWindow extends JFrame {
       }
 
       if (rowIndex == myWallet.size() + 2) {
-        return getWalletInfo(columnIndex);
+        return getTaxedWalletInfo(columnIndex);
       }
       
       return null;
@@ -251,8 +251,8 @@ public class DataViewerWindow extends JFrame {
           case CURRENT_PROFIT:
             return String.format("%s (%s)", Util.diff(share, currentShare), Util.percentageSigned(share, currentShare));
           case CURRENT_PROFIT_NET:
-            return String.format("%s (%s)", Util.diff(share.value(), currentShare.netValue()), 
-                Util.percentageSigned(share.value(), currentShare.netValue()));
+            return String.format("%s (%s)", Util.diff(share.netValue(), currentShare.netValue()), 
+                Util.percentageSigned(share.netValue(), currentShare.netValue()));
           case YEARLY_RATE:
             return String.format("%s", Util.yearlyRate(share, currentShare));
           default:
@@ -265,8 +265,6 @@ public class DataViewerWindow extends JFrame {
       switch (columnIndex) {
         case START_QUOTE:
           return "Sum:";
-        case START_VALUE:
-          return String.format(Util.FORMAT_MONEY, myWallet.value());
         default:
       }
 
@@ -280,8 +278,35 @@ public class DataViewerWindow extends JFrame {
             return String.format("%s (%s)", Util.diff(myWallet, wallet),
                 Util.percentageSigned(myWallet, wallet));
           case CURRENT_PROFIT_NET:
-            return String.format("%s (%s)", Util.diff(myWallet.value(), wallet.netValue()),
-                Util.percentageSigned(myWallet.value(), wallet.netValue()));            
+            return String.format("%s (%s)", Util.diff(myWallet.netValue(), wallet.netValue()),
+                Util.percentageSigned(myWallet.netValue(), wallet.netValue()));            
+          case YEARLY_RATE:
+            return String.format("%s", Util.yearlyRate(myWallet, wallet));
+          default:
+            return "";
+        }
+      }).orElse("");
+    }
+  
+    private String getTaxedWalletInfo(int columnIndex) {
+      switch (columnIndex) {
+        case CURRENT_PROFIT:
+          return "Taxed (19%):";
+        default:
+      }
+  
+      return currentWallet.map((wallet) -> {
+        switch (columnIndex) {
+          case CURRENT_VALUE:
+            return String.format(Util.FORMAT_MONEY, wallet.value());
+          case CURRENT_VALUE_NET:
+            return String.format(Util.FORMAT_MONEY, wallet.netValue());            
+          case CURRENT_PROFIT:
+            return String.format("%s (%s)", Util.diff(myWallet, wallet),
+                Util.percentageSigned(myWallet, wallet));
+          case CURRENT_PROFIT_NET:
+            return String.format("%s (%s)", Util.diff(myWallet.netValue(), wallet.netValue()),
+                Util.percentageSigned(myWallet.netValue(), wallet.netValue()));            
           case YEARLY_RATE:
             return String.format("%s", Util.yearlyRate(myWallet, wallet));
           default:

@@ -85,7 +85,7 @@ public final class Util {
     }
 
     BigDecimal yearlyRate = rate.multiply(DAYS_IN_A_YEAR, DECIMAL128).divide(days, DECIMAL128);
-    return String.format("%s" + FORMAT_PERCENT, sign(original.value(), current.value()), yearlyRate);
+    return String.format("%s" + FORMAT_PERCENT, sign(original.netValue(), current.netValue()), yearlyRate);
   }
 
   public static boolean isMarketOpen() {
