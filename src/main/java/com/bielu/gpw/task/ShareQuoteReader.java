@@ -2,6 +2,7 @@ package com.bielu.gpw.task;
 
 import java.io.IOException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -75,7 +76,15 @@ public class ShareQuoteReader implements Runnable {
   
   private String readUrl(String url) throws IOException {
     LOG.info("Reading: " + url);
-    String content = IOUtils.toString(new URL(url).openStream());
+    URLConnection conn = new URL(url).openConnection();
+    conn.setReadTimeout(5000);
+    String content;
+    try {
+      content = IOUtils.toString(conn.getInputStream());
+    } catch (IOException e) {
+      LOG.error("Unable to read: " + url, e);
+      content = "";
+    }
     LOG.info("Content length: " + content.length() / 1024 + " KB");
     return content;
   }

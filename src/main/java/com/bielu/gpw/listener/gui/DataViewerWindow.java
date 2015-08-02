@@ -199,7 +199,7 @@ public class DataViewerWindow extends JFrame {
 
     @Override
     public int getRowCount() {
-      return myWallet.size() + 2;
+      return myWallet.size() + 3;
     }
 
     @Override
@@ -297,18 +297,8 @@ public class DataViewerWindow extends JFrame {
   
       return currentWallet.map((wallet) -> {
         switch (columnIndex) {
-          case CURRENT_VALUE:
-            return String.format(Util.FORMAT_MONEY, wallet.value());
-          case CURRENT_VALUE_NET:
-            return String.format(Util.FORMAT_MONEY, wallet.netValue());            
-          case CURRENT_PROFIT:
-            return String.format("%s (%s)", Util.diff(myWallet, wallet),
-                Util.percentageSigned(myWallet, wallet));
           case CURRENT_PROFIT_NET:
-            return String.format("%s (%s)", Util.diff(myWallet.netValue(), wallet.netValue()),
-                Util.percentageSigned(myWallet.netValue(), wallet.netValue()));            
-          case YEARLY_RATE:
-            return String.format("%s", Util.yearlyRate(myWallet, wallet));
+            return String.format("%s", Util.diff(myWallet.netValue(), wallet.netValue(), Util.NET_PROFIT_RATE));
           default:
             return "";
         }
