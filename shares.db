@@ -1,13 +1,19 @@
-#Share Code, 	Start Quote, 	Shares Count, 	Investment Date
-KGHM,			98,				200,			2015-07-28
-PKNORLEN,		76.50,			200, 			2015-07-28
-LPP,			7590,			10,				2015-07-28
-#EAHA,			38.70,			500,			2015-07-15
-#EAT,			169.90,			100,			2015-07-28
-BYTOM,			3.25,			10000,			2015-07-28
-VISTULA,		2.34,			10000,			2015-07-28
-#BVD,			85,				200,			2015-07-28
-#LTS,			31.56,			500,			2015-07-28
-#CDR,			26.34,			500,			2015-07-28
-#MetLife SFIO Subfundusz Akcji Ameryk,	11.54,			1000,			2015-07-28,			FUND
-#NN (L) Japonia,							198.45,			100,			2015-07-28,			FUND
+#Share Code, 							Start Quote, 	Shares Count, 	Investment Date,	Type
+ESOTIQ,									40.13,			250,			2015-07-29,			SHARE
+ESOTIQ,									39.15,			250,			2015-08-03,			SHARE
+INGBSK,									122.46,			200,			2015-07-29,			SHARE
+PZU,									425.25,			16,				2015-07-29,			SHARE
+KRUK,									177.64,			57,				2015-08-03,			SHARE
+#BIOTON,									9.99,			2000,			2015-08-20,			SHARE
+#KGHM,									98,				300,			2015-07-28,			SHARE
+#PKNORLEN,								76.50,			400, 			2015-07-28,			SHARE
+#LPP,									7510,			10,				2015-07-28,			SHARE
+#BYTOM,									3.19,			7500,			2015-07-29,			SHARE
+#SFS,									4.05,			10000,			2015-07-28,			SHARE
+#LTS,									31.56,			500,			2015-07-28,			SHARE
+#ENERGA,								19.88,			1000,			2015-07-28,			SHARE
+#GPW,									47.97,			500,			2015-07-28,			SHARE
+#BZWBK,									291,			100,			2015-07-28,			SHARE
+#MBANK,									346,			100,			2015-07-29,			SHARE
+#MetLife SFIO Subfundusz Akcji Ameryk,	11.54,			10000,			2015-07-28,			FUND
+#NN (L) Japonia, 						198.45,			600,			2015-07-28,			FUND
