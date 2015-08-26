@@ -1,6 +1,6 @@
 #Share Code, 							Start Quote, 	Shares Count, 	Investment Date,	Type
-ESOTIQ,									40.13,			250,			2015-07-29,			SHARE
-ESOTIQ,									39.15,			250,			2015-08-03,			SHARE
+#ESOTIQ,									40.13,			250,			2015-07-29,			SHARE
+#ESOTIQ,									39.15,			250,			2015-08-03,			SHARE
 INGBSK,									122.46,			200,			2015-07-29,			SHARE
 PZU,									425.25,			16,				2015-07-29,			SHARE
 KRUK,									177.64,			57,				2015-08-03,			SHARE
